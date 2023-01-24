@@ -1,0 +1,18 @@
+---
+title: "working_with_text"
+format: html
+editor: visual
+---
+
+# Text analysis
+
+"A token is a meaningful unit of text, most often a word, that we are interested in using for further analysis, and tokenization is the process of splitting text into tokens." (TMR)
+
+"The default tokenizing is for words, but other options include characters, n-grams, sentences, lines, paragraphs, or separation around a regex pattern."(TMR)
+
+remove stop words; that are not useful for an analysis, typically extremely common words such as \"the\", \"of\", \"to\", and so forth in English
+
+```{r}
+#| echo: false
+2 * 2
+```
