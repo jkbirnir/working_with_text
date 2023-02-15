@@ -12,17 +12,44 @@ Furthermore, the text converted into a data frame can be converted to a variety 
 
 ## A Corpus
 
-For our analysis we need text.  The raw text is the corpus that we work on.  The corpus that we are interested in varies depending on our researh objectives.  For example, a corpus can contain a newspaper article, multiple articles, tweets about a particular topic or from a group of people. How we put together the relevant corpus depends on the objective of our analysis.  
+For our analysis we need text. The raw text is the corpus that we work on. The corpus that we are interested in varies depending on our researh objectives. For example, a corpus can contain a newspaper article, multiple articles, tweets about a particular topic or from a group of people. How we put together the relevant corpus depends on the objective of our analysis.
 
-As an example, here we will use the news-paper article that we scraped.   
+As an example, here we will use the newspaper article that we scraped.
 
-"A token is a meaningful unit of text, most often a word, that we are interested in using for further analysis, and tokenization is the process of splitting text into tokens." (TMR)
 
-"The default tokenizing is for words, but other options include characters, n-grams, sentences, lines, paragraphs, or separation around a regex pattern."(TMR)
-
-remove stop words; that are not useful for an analysis, typically extremely common words such as \"the\", \"of\", \"to\", and so forth in English
+The first step is to load the data that we saved in the last project. It was saved as an R Object, so we can load it the following way:
 
 ```{r}
-#| echo: false
-2 * 2
+para <- load("paragraphs.rdata")
 ```
+
+This loads the saved R data object into our working environment to allow us to begin working with the data.
+
+## Cleaning the Data
+
+We now need to work on cleaning the data to render it into a format that we can use for text analysis. For this tutorial, we will be using the tidyverse text analysis method so begin by loading the tidytext package and installing it if not installed yet.
+
+```{r}
+# install.packages("tidytext")
+library(tidytext)
+```
+
+There are a few other packages that also make text analysis easier:
+
+```{r}
+library(dplyr)
+library(stringr)
+```
+
+
+Now we can begin to work with the data and transform it into something usable.
+
+Begin by tokenizing the data, or separating the paragraphs and sentences into words instead of the format they are currently in.
+
+
+
+
+
+
+
+
