@@ -61,8 +61,23 @@ If we look at tidy_paragraphs, we can see that the text is broken down by word a
 
 ![](Images/1.png)
 
+Now we want to begin cleaning the corpus by removing unnecessary words. These are words that convey no meaningful information but appear frequently, usually referred to as "stop words" such as but, and, if, then, and similar words.
 
+```{r}
+tidy_paragraphs <- tidy_paragraphs %>%
+  anti_join(stop_words)
+```
 
+This uses the "stop words" dataset from tidyverse to remove the most common stop words. We can then look at the top words using the following function:
 
+```{r, eval=FALSE}
+tidy_paragraphs %>%
+  count(word, sort = TRUE) 
+```
+This shows that the top words in these articles, with stop words removed, are Munich, western, Ukraine, war, countries, and Germany.
+
+## Visualization
+
+The most commonly used words can be visualized using a word cloud.
 
 
