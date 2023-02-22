@@ -14,9 +14,14 @@ library(stringr)
 
 # Text analysis
 
+
 In this tutorial we are going to start working with the text that we scraped last time. We will take the tidy approach to text analysis because it is fairly intuitive in that it treats text as data frames for analysis.
 
 Furthermore, the text converted into a data frame can be converted to a variety of formats that allow it to be analyzed by other popular ra programs such as quanteda. While the examples are different and we won't cover all of the topics in the book you can find much of this material in [**Text Mining with R**](https://www.tidytextmining.com/index.html "A Tidy Approach")**: A Tidy Approach** listed in the syllabus
+
+This image from [**Text Mining with R**](https://www.tidytextmining.com/index.html "A Tidy Approach")**: A Tidy Approach** demonstrates the general overall process for text analysis using tidyverse:
+
+![](Images/2.png)
 
 ## A Corpus
 
