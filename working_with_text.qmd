@@ -52,7 +52,9 @@ tidy_paragraphs <- multi_df %>%
   unnest_tokens(word, text)
 ```
 
-If we look at the 
+If we look at tidy_paragraphs, we can see that the text is broken down by word and noted by the paragraph it is found in:
+
+![](Images/1.png)
 
 
 
