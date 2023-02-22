@@ -4,6 +4,14 @@ format: html
 editor: visual
 ---
 
+First, install the packages you will likely need to conduct the text analysis.
+
+```{r}
+library(dplyr)
+library(tidytext)
+library(stringr)
+```
+
 # Text analysis
 
 In this tutorial we are going to start working with the text that we scraped last time. We will take the tidy approach to text analysis because it is fairly intuitive in that it treats text as data frames for analysis.
@@ -20,25 +28,18 @@ As an example, here we will use the newspaper article that we scraped.
 The first step is to load the data that we saved in the last project. It was saved as an R Object, so we can load it the following way:
 
 ```{r}
-para <- load("paragraphs.rdata")
+load("multiple_url_paragraphs.RData")
 ```
 
-This loads the saved R data object into our working environment to allow us to begin working with the data.
+This loads the saved R data object into our working environment to allow us to begin working with the data. As you can see, it's loaded as what we saved the object as previously, multi_df. 
 
 ## Cleaning the Data
 
-We now need to work on cleaning the data to render it into a format that we can use for text analysis. For this tutorial, we will be using the tidyverse text analysis method so begin by loading the tidytext package and installing it if not installed yet.
+We now need to work on cleaning the data to render it into a format that we can use for text analysis. For this tutorial, we will be using the tidyverse text analysis method so begin by loading the tidytext package and installing it if not installed yet. This will be one of the core packages needed for our work.
 
 ```{r}
 # install.packages("tidytext")
 library(tidytext)
-```
-
-There are a few other packages that also make text analysis easier:
-
-```{r}
-library(dplyr)
-library(stringr)
 ```
 
 
@@ -47,10 +48,11 @@ Now we can begin to work with the data and transform it into something usable.
 Begin by tokenizing the data, or separating the paragraphs and sentences into words instead of the format they are currently in.
 
 ```{r}
-tidy_paragraphs <- paragraph %>%
+tidy_paragraphs <- multi_df %>%
   unnest_tokens(word, text)
-
 ```
+
+If we look at the 
 
 
 
