@@ -46,7 +46,11 @@ Now we can begin to work with the data and transform it into something usable.
 
 Begin by tokenizing the data, or separating the paragraphs and sentences into words instead of the format they are currently in.
 
+```{r}
+tidy_paragraphs <- paragraph %>%
+  unnest_tokens(word, text)
 
+```
 
 
 
