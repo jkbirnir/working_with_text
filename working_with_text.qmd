@@ -14,7 +14,6 @@ library(stringr)
 
 # Text analysis
 
-
 In this tutorial we are going to start working with the text that we scraped last time. We will take the tidy approach to text analysis because it is fairly intuitive in that it treats text as data frames for analysis.
 
 Furthermore, the text converted into a data frame can be converted to a variety of formats that allow it to be analyzed by other popular ra programs such as quanteda. While the examples are different and we won't cover all of the topics in the book you can find much of this material in [**Text Mining with R**](https://www.tidytextmining.com/index.html "A Tidy Approach")**: A Tidy Approach** listed in the syllabus
@@ -25,10 +24,11 @@ This image from [**Text Mining with R**](https://www.tidytextmining.com/index.ht
 
 ## A Corpus
 
-For our analysis we need text. The raw text is the corpus that we work on. The corpus that we are interested in varies depending on our researh objectives. For example, a corpus can contain a newspaper article, multiple articles, tweets about a particular topic or from a group of people. How we put together the relevant corpus depends on the objective of our analysis.
+For our analysis we need text. The raw text is the corpus that we work on. The corpus that we are interested in varies depending on our research objectives. For example, a corpus can contain a newspaper article, multiple articles, tweets about a particular topic or from a group of people. How we put together the relevant corpus depends on the objective of our analysis.
+
+ADD A SECTION ABOUT CREATING A CORPUS (USING PDFS AND THINGS)
 
 As an example, here we will use the newspaper article that we scraped.
-
 
 The first step is to load the data that we saved in the last project. It was saved as an R Object, so we can load it the following way:
 
@@ -36,7 +36,7 @@ The first step is to load the data that we saved in the last project. It was sav
 load("multiple_url_paragraphs.RData")
 ```
 
-This loads the saved R data object into our working environment to allow us to begin working with the data. As you can see, it's loaded as what we saved the object as previously, multi_df. 
+This loads the saved R data object into our working environment to allow us to begin working with the data. As you can see, it's loaded as what we saved the object as previously, multi_df.
 
 ## Cleaning the Data
 
@@ -46,7 +46,6 @@ We now need to work on cleaning the data to render it into a format that we can 
 # install.packages("tidytext")
 library(tidytext)
 ```
-
 
 Now we can begin to work with the data and transform it into something usable.
 
@@ -68,16 +67,43 @@ tidy_paragraphs <- tidy_paragraphs %>%
   anti_join(stop_words)
 ```
 
-This uses the "stop words" dataset from tidyverse to remove the most common stop words. We can then look at the top words using the following function:
+This uses the "stop words" dataset from tidyverse to remove the most common stop words. 
+
+ADD IN CLEANING THAT ISN'T JUST STOP WORDS
+
+We can then look at the top words using the following function:
 
 ```{r, eval=FALSE}
 tidy_paragraphs %>%
   count(word, sort = TRUE) 
 ```
+
 This shows that the top words in these articles, with stop words removed, are Munich, western, Ukraine, war, countries, and Germany.
 
 ## Visualization
 
-The most commonly used words can be visualized using a word cloud.
+The most commonly used words can be visualized using a word cloud. Two packages, devtools and wordcloud2, are needed to do this.
 
+```{r}
+library(wordcloud2)
+library(devtools)
+```
 
+First, we must figure out the word counts:
+
+```{r}
+t_para <- tidy_paragraphs %>%
+  count(word, sort = TRUE) 
+```
+
+You can make a very simple wordcloud using the wordcloud2() function.
+
+```{r}
+wordcloud2(t_para)
+```
+
+This then outputs a simple wordcloud of the most commonly use words in our articles.
+
+[ADD SUMMARY STATISTICS]
+
+[ADD SENTIMENT ANALYSIS PORTION]
