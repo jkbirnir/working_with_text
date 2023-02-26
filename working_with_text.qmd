@@ -26,22 +26,70 @@ This image from [**Text Mining with R**](https://www.tidytextmining.com/index.ht
 
 For our analysis we need text. The raw text is the corpus that we work on. The corpus that we are interested in varies depending on our research objectives. For example, a corpus can contain a newspaper article, multiple articles, tweets about a particular topic or from a group of people. How we put together the relevant corpus depends on the objective of our analysis.
 
-### Scraping PDFs
+### Working with pdf files
 
-Begin by loading the following libraries:
+Text comes in many formats.  This section explains how to extract text from a PDF file (or multiple pdf files) into a corpus.  
 
+For further information see:
+
+https://data.library.virginia.edu/reading-pdf-files-into-r-for-text-mining/
+
+#### 1:
 ```{r}
+install.packages("pdftools")
 library(pdftools)
-library(pdftables)
 ```
 
-Then download your PDFs and put them into the folder with your R project. Then use the following code to scrape it:
+####  2:
+Create a vector of pdf file names from the pdf files in your directory
+(remember to set the working directory to the directory where you are keeping your files)
 
 ```{r}
-text_1 <- pdf_text("93-95_8-21-YUGOSLAVIA.pdf")
+files <- list.files(pattern = "pdf$")
 ```
 
-For the rest of the tutorial,  we will use the newspaper article that we scraped.
+
+#### 3:
+Extract the text from the pdf
+
+```{r}
+documents <- lapply(files, pdf_text)
+```
+
+####  4:
+
+Verify and save
+
+how many documents were read:
+
+```{r, echo=FALSE}
+length(documents)
+```
+
+The number of pages in each document
+```{r, echo=FALSE}
+lapply(documents, length) 
+```
+To see the documents
+```{r, echo=FALSE}
+documents
+```
+
+You can then save the pdf corpus in the same way that you saved the paragraph file.  Creating one variable out of each document
+
+```{r, echo=FALSE}
+all_docs <- as.data.frame(do.call(rbind, documents))
+```
+
+```{r, eval=FALSE}
+save(all_docs, file="all_docs.RData")
+```
+
+
+
+# Cleaning
+
+As an example, here we will use the newspaper article that we scraped.
 
 The first step is to load the data that we saved in the last project. It was saved as an R Object, so we can load it the following way:
 
@@ -82,12 +130,7 @@ tidy_paragraphs <- tidy_paragraphs %>%
 
 This uses the "stop words" dataset from tidyverse to remove the most common stop words. 
 
-You can also remove words that are not stop words but you'd like to remove. For example, if you accidentally scrape advertisements or other useless details, you can remove those words specifically:
-
-```{r}
-tidy_paragraphs <-tidy_paragraphs %>%
-  filter(!word %in% c("password","logging","Politico"))
-```
+ADD IN CLEANING THAT ISN'T JUST STOP WORDS
 
 We can then look at the top words using the following function:
 
