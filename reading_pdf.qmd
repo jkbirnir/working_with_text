@@ -1,0 +1,64 @@
+---
+title: "reading pdf files"
+format: html
+editor: visual
+---
+
+## Reading pdf files
+
+For further information see:
+
+https://data.library.virginia.edu/reading-pdf-files-into-r-for-text-mining/
+
+# 1:
+```{r}
+install.packages("pdftools")
+library(pdftools)
+```
+
+# 2:
+Create a vector of pdf file names from the pdf files in your directory
+(remember to set the working directory to the directory where you are keeping your files)
+
+```{r}
+files <- list.files(pattern = "pdf$")
+```
+
+
+# 3:
+Extract the text from the pdf
+
+```{r}
+documents <- lapply(files, pdf_text)
+```
+
+# 4:
+
+Verify and clean
+
+how many documents were read:
+
+```{r, echo=FALSE}
+length(documents)
+```
+
+The number of pages in each document
+```{r, echo=FALSE}
+lapply(documents, length) 
+```
+To see the documents
+```{r, echo=FALSE}
+documents
+```
+
+# 5: Cleaning
+
+
+```{r}
+library(dplyr)
+library(tidytext)
+library(stringr)
+
+tidy_documents <- docframe %>%
+  unnest_tokens(word, text)
+```
