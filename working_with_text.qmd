@@ -85,6 +85,8 @@ all_docs <- as.data.frame(do.call(rbind, documents))
 save(all_docs, file="all_docs.RData")
 ```
 
+
+
 # Cleaning
 
 As an example, here we will use the newspaper article that we scraped.
