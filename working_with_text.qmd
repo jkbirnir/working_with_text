@@ -26,21 +26,19 @@ This image from [**Text Mining with R**](https://www.tidytextmining.com/index.ht
 
 For our analysis we need text. The raw text is the corpus that we work on. The corpus that we are interested in varies depending on our research objectives. For example, a corpus can contain a newspaper article, multiple articles, tweets about a particular topic or from a group of people. How we put together the relevant corpus depends on the objective of our analysis.
 
-### Working with pdf files
-
-Text comes in many formats.  This section explains how to extract text from a PDF file (or multiple pdf files) into a corpus.  
+## Working with pdf files
 
 For further information see:
 
 https://data.library.virginia.edu/reading-pdf-files-into-r-for-text-mining/
 
-#### 1:
+#### 1: Package for reading pdf
 ```{r}
 install.packages("pdftools")
 library(pdftools)
 ```
 
-####  2:
+#### 2:
 Create a vector of pdf file names from the pdf files in your directory
 (remember to set the working directory to the directory where you are keeping your files)
 
@@ -48,18 +46,14 @@ Create a vector of pdf file names from the pdf files in your directory
 files <- list.files(pattern = "pdf$")
 ```
 
-
-#### 3:
-Extract the text from the pdf
+#### 3: Extract the text from the pdf
 
 ```{r}
 documents <- lapply(files, pdf_text)
+
 ```
 
-####  4:
-
-Verify and save
-
+Verify 
 how many documents were read:
 
 ```{r, echo=FALSE}
@@ -75,16 +69,26 @@ To see the documents
 documents
 ```
 
-You can then save the pdf corpus in the same way that you saved the paragraph file.  Creating one variable out of each document
+#### 4: Convert to document-term-matrix
 
-```{r, echo=FALSE}
-all_docs <- as.data.frame(do.call(rbind, documents))
+```{r}
+library(tidyverse)
+library(tidytext)
+library(pdftools)
+library(tm)
+library(broom)
+
+converted <- Corpus(VectorSource(documents)) %>%
+          DocumentTermMatrix()
 ```
 
-```{r, eval=FALSE}
-save(all_docs, file="all_docs.RData")
-```
+#### 5: Convert to a tidy format
 
+```{r}
+converted %>%
+          tidy() %>%
+          filter(!grepl("[0-9]+", term))
+```          
 
 
 # Cleaning

@@ -4,7 +4,7 @@ format: html
 editor: visual
 ---
 
-## Reading pdf files
+## Working with pdf files
 
 For further information see:
 
@@ -24,18 +24,15 @@ Create a vector of pdf file names from the pdf files in your directory
 files <- list.files(pattern = "pdf$")
 ```
 
-
 # 3:
 Extract the text from the pdf
 
 ```{r}
 documents <- lapply(files, pdf_text)
+
 ```
 
-# 4:
-
-Verify and clean
-
+Verify 
 how many documents were read:
 
 ```{r, echo=FALSE}
@@ -51,14 +48,30 @@ To see the documents
 documents
 ```
 
-# 5: Cleaning
 
+# 4: Convert to document-term-matrix
 
 ```{r}
-library(dplyr)
+library(tidyverse)
 library(tidytext)
-library(stringr)
+library(pdftools)
+library(tm)
+library(broom)
 
-tidy_documents <- docframe %>%
-  unnest_tokens(word, text)
+converted <- Corpus(VectorSource(documents)) %>%
+          DocumentTermMatrix()
 ```
+
+# Now I want to convert this to a tidy format
+
+```{r}
+converted %>%
+          tidy() %>%
+          filter(!grepl("[0-9]+", term))
+```          
+          
+
+# 5: Cleaning
+
+Go 
+
