@@ -125,25 +125,33 @@ load("multiple_url_paragraphs.RData")
 
 This loads the saved R data object into our working environment to allow us to begin working with the data. As you can see, it's loaded as what we saved the object as previously, multi_df.
 
+The multi_df data consists - as you recall - of all the paragraphs that we collected and an id that identifies the number of the paragraph in a given article.  The id numbers repeat for each article.
+
+![](Images/7.png)
+
 ## Cleaning the Data
 
-We now need to work on cleaning the data to render it into a format that we can use for text analysis. For this tutorial, we will be using the tidyverse text analysis method so begin by loading the tidytext package and installing it if not installed yet. This will be one of the core packages needed for our work.
+To work with the unmodified corpus data we need to render it into a format that we can use for text analysis. Specifically, the data we need to turn it into a tokenized cleaned dataframe.
+
+For this tutorial, we will be using the tidyverse text analysis method because it is very intuitive so begin by loading the tidytext package and installing it if not installed yet. This will be one of the core packages needed for our work.
 
 ```{r}
 # install.packages("tidytext")
 library(tidytext)
 ```
 
-Now we can begin to work with the data and transform it into something usable.
+Now we can begin to work with the data.
 
-Begin by tokenizing the data, or separating the paragraphs and sentences into words instead of the format they are currently in.
+First we want to transform the corpus into something more usable usable by tokenizing the text.
+
+By tokenizing the corpus we are separating the paragraphs and sentences into words instead of the format they are currently in.
 
 ```{r}
 tidy_paragraphs <- multi_df %>%
   unnest_tokens(word, text)
 ```
 
-If we look at tidy_paragraphs, we can see that the text is broken down by word and noted by the paragraph it is found in:
+If we look at tidy_paragraphs, we can see that the text is broken down by word and noted by the paragraph it is found in.  The paragraph id repeats for each article that we downloaded that contains text.  
 
 ![](Images/1.png)
 
@@ -172,9 +180,14 @@ tidy_paragraphs <-tidy_paragraphs %>%
   filter(!word %in% c("Politico","reporting")) #Add in the word you'd like to remove here to filter them out
 ```
 
-# Visualization
+# Analyzing the Data 
 
-The most commonly used words can be visualized using a word cloud. Two packages, devtools and wordcloud2, are needed to do this.
+Next we want to analyze the data.
+
+## Wordcloud Visualization 
+ One common way to analyze the data is to vizualize them.
+ 
+For example, the most commonly used words can be visualized using a word cloud. Two packages, devtools and wordcloud2, are needed to do this.
 
 ```{r}
 library(wordcloud2)
@@ -182,6 +195,7 @@ library(devtools)
 ```
 
 First, we must figure out the word counts:
+JORDAN WHY DO WE NEED TO DO THAT?  WHAT ARE WE SUBSETTING HERE?
 
 ```{r}
 t_para <- tidy_paragraphs %>%
@@ -196,20 +210,21 @@ wordcloud2(t_para)
 
 This then outputs a simple wordcloud of the most commonly use words in our articles.
 
-# Analyzing the Data
+## Word sequences N-grams
 
-Now we can look at other ways to analyze the text data we have scraped.
+ALternatively we may want to establish relationships between words.
+For example, by seeing how often word X is followed by word Y, we can build a model of the relationships between them.
 
-## N-grams
+To do this we go back to the un-tokenized corpus multi_df.
 
-We can use the function unnest_tokens as used earlier in order to tokenize into consecutive sequences of words, called n-grams. By seeing how often word X is followed by word Y, we can then build a model of the relationships between them.
+We can then use the function unnest_tokens as used earlier in order to tokenize into consecutive sequences of words (as opposed to single words), called n-grams. 
 
 We do this by adding the token = "ngrams" option to unnest_tokens(), and setting n to the number of words we wish to capture in each n-gram. When we set n to 2, we are examining pairs of two consecutive words, often called "bigrams":
 
 ```{r}
 tidy_bigrams <- multi_df %>%
   unnest_tokens(bigram, text, token = "ngrams", n = 2) %>%
-  filter(!is.na(bigram))
+  filter(!is.na(bigram)) #NOTE here we are filtering out any words that are not a part of a bigram
 ```
 
 Our usual tidy tools apply equally well to n-gram analysis. We can examine the most common bigrams using dplyr's count():
@@ -248,13 +263,13 @@ When human readers approach a text, we use our understanding of the emotional in
 
 ![](Images/5.png)
 
-There are quite a few existing dictionaries and methods for sentiment analysis that make our work easier. The tidytext package provides access to several sentiment lexicons.
+There alrrerady exist quite a few existing dictionaries and methods for sentiment analysis that make our work easier. The tidytext package provides access to several ready made sentiment lexicons.
 
 All three of these lexicons are based on unigrams, i.e., single words. These lexicons contain many English words and the words are assigned scores for positive/negative sentiment, and also possibly emotions like joy, anger, or sadness.
 
 The function get_sentiments() allows us to get specific sentiment lexicons with the appropriate measures for each one.
 
-The following code is an example of how to use a sentiment dictionary to analyze the paragraphs we scraped earlier. In order to make the analysis interesting, we can separate the analysis by document. To do this, we will use the pdf files scraped earlier.
+The following code is an example of how to use an existing sentiment dictionary to analyze the text we collected earlier. In order to make the analysis more interesting, we can separate the analysis by document. To do this, we will use the pdf files scraped earlier.
 
 First, rename the "term" column in pdf_frame to word so it's easier to join with the sentiment dictionary.
 
@@ -272,7 +287,7 @@ multi_doc_sentiment <- pdf_frame %>%
   mutate(sentiment = positive - negative)
 ```
 
-Now we can compare the sentiments between documents, just as an example of what you can do with sentiment analysis. This can be done via ggplot2.
+Now we can compare the sentiments between documentsdata in the , just as an example of what you can do with sentiment analysis. This can be done via ggplot2.
 
 ```{r}
 p2 <- ggplot(multi_doc_sentiment, aes(document, sentiment, fill = document)) +
@@ -284,4 +299,13 @@ p2 <- ggplot(multi_doc_sentiment, aes(document, sentiment, fill = document)) +
 p2
 ```
 
-As shown in these graphs, documents 4 and 5 are signficantly more negative in sentiment than the othe rthree documents.
+As shown in these graphs, documents 4 and 5 are signficantly more negative in sentiment than the other three documents.
+
+This is not altogether surprising as the first 3 documents are judicial opinions whereas the last 2 documents are JORDAN PLEASE FINISH
+
+# Other packages and options
+
+Text analysis has gained significant steam and multiple packages have been developed to analyze sentiment and other features of text.  Some of the interesting and popular packages out there include:
+[Quanteda](http://quanteda.io/) and many others.  Some, including quanteda are discussed in the book we based this tutorial largely on [**Text Mining with R**](https://www.tidytextmining.com/index.html "A Tidy Approach"), some are genenal purpose others satisfy a specific requirement.  We encourage you to read more if you are interested in exploring this further.
+
+Furthermore, when you develop your own research you may want to develop your own dictionary for text depending on what you are looking for.  For example, the AMAR project (see ilcss) developed dictionaries to detect ethnic minority groups and a variety of activity they engage in in news paper text.  We will learn more about this March 7th.
