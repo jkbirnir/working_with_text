@@ -35,7 +35,7 @@ https://data.library.virginia.edu/reading-pdf-files-into-r-for-text-mining/
 #### 1: Package for reading pdf
 
 ```{r}
-install.packages("pdftools")
+#install.packages("pdftools") #Text Extraction, Rendering and Converting of PDF Documents.  See: https://docs.ropensci.org/pdftools/
 library(pdftools)
 ```
 
@@ -44,51 +44,50 @@ library(pdftools)
 Create a vector of pdf file names from the pdf files in your directory (remember to set the working directory to the directory where you are keeping your files)
 
 ```{r}
-files <- list.files(pattern = "pdf$")
+pdf_files <- list.files(pattern = "pdf$")
 ```
 
 #### 3: Extract the text from the pdf
 
 ```{r}
-documents <- lapply(files, pdf_text)
+pdf_content <- lapply(pdf_files, pdf_text)
 
 ```
 
-Verify how many documents were read:
+Verify how many documents in pdf_content were read:
 
 ```{r, echo=FALSE}
-length(documents)
+length(pdf_content)
 ```
 
-The number of pages in each document
+The number of pages in each document in pdf_content
 
 ```{r, echo=FALSE}
-lapply(documents, length) 
+lapply(pdf_content, length) 
 ```
 
-To see the documents
+To see the pdf_content
 
 ```{r, echo=FALSE}
-documents
+pdf_content
 ```
 
 #### 4: Convert to document-term-matrix
 
 ```{r}
+#additional packages
 library(tidyverse)
-library(tidytext)
-library(pdftools)
-library(tm)
-library(broom)
+library(tm) #A framework for text mining applications within R.  See https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf
+library(broom) #The broom package takes the messy output of built-in functions in R, such as lm, nls, or t.test, and turns them into tidy tibbles. See: https://cran.r-project.org/web/packages/broom/vignettes/broom.html
 
-converted <- Corpus(VectorSource(documents)) %>%
+pdf_converted <- Corpus(VectorSource(pdf_content)) %>%
           DocumentTermMatrix()
 ```
 
 #### 5: Convert to a tidy format
 
 ```{r}
-converted1 =converted %>%
+pdf_frame =pdf_converted %>%
           tidy() %>%
           filter(!grepl("[0-9]+", term)) #filters out nongrepl (string) digits
 ```
@@ -184,7 +183,7 @@ Now we can look at other ways to analyze the text data we have scraped.
 
 We can use the function unnest_tokens as used earlier in order to tokenize into consecutive sequences of words, called n-grams. By seeing how often word X is followed by word Y, we can then build a model of the relationships between them.
 
-We do this by adding the token = "ngrams" option to unnest_tokens(), and setting n to the number of words we wish to capture in each n-gram. When we set n to 2, we are examining pairs of two consecutive words, often called “bigrams”:
+We do this by adding the token = "ngrams" option to unnest_tokens(), and setting n to the number of words we wish to capture in each n-gram. When we set n to 2, we are examining pairs of two consecutive words, often called "bigrams":
 
 ```{r}
 tidy_bigrams <- multi_df %>%
@@ -192,7 +191,7 @@ tidy_bigrams <- multi_df %>%
   filter(!is.na(bigram))
 ```
 
-Our usual tidy tools apply equally well to n-gram analysis. We can examine the most common bigrams using dplyr’s count():
+Our usual tidy tools apply equally well to n-gram analysis. We can examine the most common bigrams using dplyr's count():
 
 ```{r, eval=FALSE}
 tidy_bigrams %>%
@@ -201,7 +200,7 @@ tidy_bigrams %>%
 
 It then shows the pairs of words that frequently appear together. Looking at it, you can see that the words are often two stop words and thus, uninteresting. We can clean the data in order to filter the stop words and focus on the interesting text.
 
-This is a useful time to use tidyr’s separate(), which splits a column into multiple based on a delimiter. This lets us separate it into two columns, “word1” and “word2”, at which point we can remove cases where either is a stop-word.
+This is a useful time to use tidyr's separate(), which splits a column into multiple based on a delimiter. This lets us separate it into two columns, "word1" and "word2", at which point we can remove cases where either is a stop-word.
 
 ```{r}
 library(tidyr)
@@ -228,8 +227,7 @@ When human readers approach a text, we use our understanding of the emotional in
 
 ![](Images/5.png)
 
-There are quite a few existing dictionaries and methods for sentiment analysis that make our work easier. The tidytext package provides access to several sentiment lexicons. 
-
+There are quite a few existing dictionaries and methods for sentiment analysis that make our work easier. The tidytext package provides access to several sentiment lexicons.
 
 All three of these lexicons are based on unigrams, i.e., single words. These lexicons contain many English words and the words are assigned scores for positive/negative sentiment, and also possibly emotions like joy, anger, or sadness.
 
@@ -237,16 +235,16 @@ The function get_sentiments() allows us to get specific sentiment lexicons with 
 
 The following code is an example of how to use a sentiment dictionary to analyze the paragraphs we scraped earlier. In order to make the analysis interesting, we can separate the analysis by document. To do this, we will use the pdf files scraped earlier.
 
-First, rename the "term" column in converted1 to word so it's easier to join with the sentiment dictionary.
+First, rename the "term" column in pdf_frame to word so it's easier to join with the sentiment dictionary.
 
 ```{r}
-colnames(converted1)[2] ="word"
+colnames(pdf_frame)[2] ="word"
 ```
 
 Now, run this code to join the sentiment dictionary with the scraped text and derive a sentiment score. This uses the "bing" sentiment dictionary, which comes with the tidyverse packages:
 
 ```{r}
-multi_doc_sentiment <- converted1 %>%
+multi_doc_sentiment <- pdf_frame %>%
   inner_join(get_sentiments("bing"), by="word") %>%
   count(document, sentiment) %>%
   pivot_wider(names_from = sentiment, values_from = n, values_fill = 0) %>% 
@@ -266,6 +264,3 @@ p2
 ```
 
 As shown in these graphs, documents 4 and 5 are signficantly more negative in sentiment than the othe rthree documents.
-
-
-
