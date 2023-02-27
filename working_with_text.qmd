@@ -85,9 +85,9 @@ converted <- Corpus(VectorSource(documents)) %>%
 #### 5: Convert to a tidy format
 
 ```{r}
-converted %>%
+converted1 =converted %>%
           tidy() %>%
-          filter(!grepl("[0-9]+", term))
+          filter(!grepl("[0-9]+", term)) #filters out nongrepl (string) digits
 ```          
 
 

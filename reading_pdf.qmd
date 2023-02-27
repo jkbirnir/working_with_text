@@ -65,7 +65,7 @@ converted <- Corpus(VectorSource(documents)) %>%
 # Now I want to convert this to a tidy format
 
 ```{r}
-converted %>%
+converted1 =converted %>%
           tidy() %>%
           filter(!grepl("[0-9]+", term))
 ```          
