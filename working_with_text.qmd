@@ -28,7 +28,7 @@ For our analysis we need text. The raw text is the corpus that we work on. The c
 
 ## Working with pdf files
 
-In a prior tutorial we scraped some news data from the internet.  However, often we are interested in systematizing and analysing a set of data that exist such as party manifestos or academic articles, or human rights reports, or judges opinions.  Often these data are available in pdf format.  Therefore, we interject here a brief explanation of how to extract data from pdf.
+In a prior tutorial we scraped some news data from the internet. However, often we are interested in systematizing and analysing a set of data that exist such as party manifestos or academic articles, or human rights reports, or judges opinions. Often these data are available in pdf format. Therefore, we interject here a brief explanation of how to extract data from pdf.
 
 For further information see:
 
@@ -101,15 +101,13 @@ pdf_frame =pdf_converted %>%
 #NOTE: filters out non-grepl (string) digits from 0-9 in any form
 ```
 
-What you should see now is that the data has been saved as a dataframe with one variable accounting for the document number (id) and the next variable listing words in that document and the third variable counting how often that word occurs.  NOTE: the filetering above already filtered out numerical non-words.
+What you should see now is that the data has been saved as a dataframe with one variable accounting for the document number (id) and the next variable listing words in that document and the third variable counting how often that word occurs. NOTE: the filetering above already filtered out numerical non-words.
 
 ```{r}
 view(pdf_frame)
 ```
 
-
-![](Images/6.png)
-Clearly there remains some cleaning of this text to be done :)
+![](Images/6.png) Clearly there remains some cleaning of this text to be done :)
 
 # Cleaning
 
@@ -125,7 +123,7 @@ load("multiple_url_paragraphs.RData")
 
 This loads the saved R data object into our working environment to allow us to begin working with the data. As you can see, it's loaded as what we saved the object as previously, multi_df.
 
-The multi_df data consists - as you recall - of all the paragraphs that we collected and an id that identifies the number of the paragraph in a given article.  The id numbers repeat for each article.
+The multi_df data consists - as you recall - of all the paragraphs that we collected and an id that identifies the number of the paragraph in a given article. The id numbers repeat for each article.
 
 ![](Images/7.png)
 
@@ -151,7 +149,7 @@ tidy_paragraphs <- multi_df %>%
   unnest_tokens(word, text)
 ```
 
-If we look at tidy_paragraphs, we can see that the text is broken down by word and noted by the paragraph it is found in.  The paragraph id repeats for each article that we downloaded that contains text.  
+If we look at tidy_paragraphs, we can see that the text is broken down by word and noted by the paragraph it is found in. The paragraph id repeats for each article that we downloaded that contains text.
 
 ![](Images/1.png)
 
@@ -180,13 +178,14 @@ tidy_paragraphs <-tidy_paragraphs %>%
   filter(!word %in% c("Politico","reporting")) #Add in the word you'd like to remove here to filter them out
 ```
 
-# Analyzing the Data 
+# Analyzing the Data
 
 Next we want to analyze the data.
 
-## Wordcloud Visualization 
- One common way to analyze the data is to vizualize them.
- 
+## Wordcloud Visualization
+
+One common way to analyze the data is to vizualize them.
+
 For example, the most commonly used words can be visualized using a word cloud. Two packages, devtools and wordcloud2, are needed to do this.
 
 ```{r}
@@ -194,8 +193,7 @@ library(wordcloud2)
 library(devtools)
 ```
 
-First, we must figure out the word counts:
-JORDAN WHY DO WE NEED TO DO THAT?  WHAT ARE WE SUBSETTING HERE?
+First, we must figure out the word counts. This is in order to figure out how to size the words within the word cloud. Words that occur more frequently will be larger and the ones that occur less frequently will be smaller.
 
 ```{r}
 t_para <- tidy_paragraphs %>%
@@ -212,12 +210,11 @@ This then outputs a simple wordcloud of the most commonly use words in our artic
 
 ## Word sequences N-grams
 
-ALternatively we may want to establish relationships between words.
-For example, by seeing how often word X is followed by word Y, we can build a model of the relationships between them.
+ALternatively we may want to establish relationships between words. For example, by seeing how often word X is followed by word Y, we can build a model of the relationships between them.
 
 To do this we go back to the un-tokenized corpus multi_df.
 
-We can then use the function unnest_tokens as used earlier in order to tokenize into consecutive sequences of words (as opposed to single words), called n-grams. 
+We can then use the function unnest_tokens as used earlier in order to tokenize into consecutive sequences of words (as opposed to single words), called n-grams.
 
 We do this by adding the token = "ngrams" option to unnest_tokens(), and setting n to the number of words we wish to capture in each n-gram. When we set n to 2, we are examining pairs of two consecutive words, often called "bigrams":
 
@@ -301,11 +298,10 @@ p2
 
 As shown in these graphs, documents 4 and 5 are signficantly more negative in sentiment than the other three documents.
 
-This is not altogether surprising as the first 3 documents are judicial opinions whereas the last 2 documents are JORDAN PLEASE FINISH
+This is not altogether surprising as the first 3 documents are judicial opinions whereas the last 2 documents are less negative (although they all have negative sentiments overall).
 
 # Other packages and options
 
-Text analysis has gained significant steam and multiple packages have been developed to analyze sentiment and other features of text.  Some of the interesting and popular packages out there include:
-[Quanteda](http://quanteda.io/) and many others.  Some, including quanteda are discussed in the book we based this tutorial largely on [**Text Mining with R**](https://www.tidytextmining.com/index.html "A Tidy Approach"), some are genenal purpose others satisfy a specific requirement.  We encourage you to read more if you are interested in exploring this further.
+Text analysis has gained significant steam and multiple packages have been developed to analyze sentiment and other features of text. Some of the interesting and popular packages out there include: [Quanteda](http://quanteda.io/) and many others. Some, including quanteda are discussed in the book we based this tutorial largely on [**Text Mining with R**](https://www.tidytextmining.com/index.html "A Tidy Approach"), some are genenal purpose others satisfy a specific requirement. We encourage you to read more if you are interested in exploring this further.
 
-Furthermore, when you develop your own research you may want to develop your own dictionary for text depending on what you are looking for.  For example, the AMAR project (see ilcss) developed dictionaries to detect ethnic minority groups and a variety of activity they engage in in news paper text.  We will learn more about this March 7th.
+Furthermore, when you develop your own research you may want to develop your own dictionary for text depending on what you are looking for. For example, the AMAR project (see ilcss) developed dictionaries to detect ethnic minority groups and a variety of activity they engage in in news paper text. We will learn more about this March 7th.
