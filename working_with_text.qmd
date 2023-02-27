@@ -24,9 +24,11 @@ This image from [**Text Mining with R**](https://www.tidytextmining.com/index.ht
 
 ## A Corpus
 
-For our analysis we need text. The raw text is the corpus that we work on. The corpus that we are interested in varies depending on our research objectives. For example, a corpus can contain a newspaper article, multiple articles, tweets about a particular topic or from a group of people. How we put together the relevant corpus depends on the objective of our analysis.
+For our analysis we need text. The raw text is the corpus that we work on. The corpus that we are interested in varies depending on our research objectives. For example, a corpus can contain a newspaper article, multiple articles, tweets about a particular topic or from a group of people, text from pdf documents that we have collected etc. How we put together the relevant corpus depends on the objective of our analysis.
 
 ## Working with pdf files
+
+In a prior tutorial we scraped some news data from the internet.  However, often we are interested in systematizing and analysing a set of data that exist such as party manifestos or academic articles, or human rights reports, or judges opinions.  Often these data are available in pdf format.  Therefore, we interject here a brief explanation of how to extract data from pdf.
 
 For further information see:
 
@@ -39,7 +41,7 @@ https://data.library.virginia.edu/reading-pdf-files-into-r-for-text-mining/
 library(pdftools)
 ```
 
-#### 2:
+#### 2: Creating a list of your pdf files
 
 Create a vector of pdf file names from the pdf files in your directory (remember to set the working directory to the directory where you are keeping your files)
 
@@ -49,18 +51,20 @@ pdf_files <- list.files(pattern = "pdf$")
 
 #### 3: Extract the text from the pdf
 
+Next we extract all the text from all of the pdf_files that we listed in our prior object.
+
 ```{r}
 pdf_content <- lapply(pdf_files, pdf_text)
 
 ```
 
-Verify how many documents in pdf_content were read:
+We can verify how many documents in pdf_content were read:
 
 ```{r, echo=FALSE}
 length(pdf_content)
 ```
 
-The number of pages in each document in pdf_content
+Count the number of pages in each document in pdf_content
 
 ```{r, echo=FALSE}
 lapply(pdf_content, length) 
@@ -69,10 +73,12 @@ lapply(pdf_content, length)
 To see the pdf_content
 
 ```{r, echo=FALSE}
-pdf_content
+#pdf_content  #lets not do this because it takes forever and creates a very large file but you get the idea
 ```
 
 #### 4: Convert to document-term-matrix
+
+Next we want to convert the text to a matrix
 
 ```{r}
 #additional packages
@@ -86,13 +92,28 @@ pdf_converted <- Corpus(VectorSource(pdf_content)) %>%
 
 #### 5: Convert to a tidy format
 
+A final step is to tidy our document matrix into a tibble frame for analysis
+
 ```{r}
 pdf_frame =pdf_converted %>%
           tidy() %>%
-          filter(!grepl("[0-9]+", term)) #filters out nongrepl (string) digits
+          filter(!grepl("[0-9]+", term)) 
+#NOTE: filters out non-grepl (string) digits from 0-9 in any form
 ```
 
+What you should see now is that the data has been saved as a dataframe with one variable accounting for the document number (id) and the next variable listing words in that document and the third variable counting how often that word occurs.  NOTE: the filetering above already filtered out numerical non-words.
+
+```{r}
+view(pdf_frame)
+```
+
+
+![](Images/6.png)
+Clearly there remains some cleaning of this text to be done :)
+
 # Cleaning
+
+After you extract your data - whether it is news articles of text from a pdf we want to do some cleaning of that data (note above how we already did some cleaning by filtering out numbers)
 
 As an example, here we will use the newspaper article that we scraped.
 
