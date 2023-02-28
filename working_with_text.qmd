@@ -193,13 +193,14 @@ library(wordcloud2)
 library(devtools)
 ```
 
-First, we must figure out the word counts. This is in order to figure out how to size the words within the word cloud. Words that occur more frequently will be larger and the ones that occur less frequently will be smaller.
+First, we must figure out the word counts. This is in order to figure out how to size the words within the word cloud. Words that occur more frequently will be larger and the ones that occur less frequently will be smaller.  
 
 ```{r}
 t_para <- tidy_paragraphs %>%
   count(word, sort = TRUE) 
 ```
 
+Note that the new object (t_para) counts words in the entire tokenized corpus we fed to it (tidy_paragraphs) and did not treat each article as a separate entity.
 You can make a very simple wordcloud using the wordcloud2() function.
 
 ```{r}
@@ -284,7 +285,9 @@ multi_doc_sentiment <- pdf_frame %>%
   mutate(sentiment = positive - negative)
 ```
 
-Now we can compare the sentiments between documentsdata in the , just as an example of what you can do with sentiment analysis. This can be done via ggplot2.
+Note count(document, sentiment) asks the program to count sentiment words by document and not in the whole corpus.  This is useful for comparing one document to the next. 
+
+Now we can compare the sentiments between documents data in the , just as an example of what you can do with sentiment analysis. This can be done via ggplot2.
 
 ```{r}
 p2 <- ggplot(multi_doc_sentiment, aes(document, sentiment, fill = document)) +
