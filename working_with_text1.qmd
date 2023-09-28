@@ -81,7 +81,7 @@ This uses the "stop words" dataset from tidyverse to remove the most common stop
 We can then look at the top words in our articles using the following function:
 
 ```{r, eval=FALSE}
-tidy_paragraphs %>%
+tidy_paragraphs%>%
   count(word, sort = TRUE) 
 ```
 
@@ -91,7 +91,7 @@ You can also clean words/spaces/numbers that aren't stop words. This can be espe
 
 ```{r}
 tidy_paragraphs <-tidy_paragraphs %>%
-  filter(!word %in% c("Politico","reporting")) #Add in the word you'd like to remove here to filter them out
+  filter(!word %in% c("a4","a6")) #Add in the word you'd like to remove here to filter them out
 ```
 
 You can also clean out any numbers with the following code.
