@@ -67,6 +67,8 @@ If we look at tidy_paragraphs, we can see that the text is broken down by word a
 
 ![](Images/1.png)
 
+### Cleaning
+
 Now we want to begin cleaning the corpus by removing unnecessary words. These are words that convey no meaningful information but appear frequently, usually referred to as "stop words" such as but, and, if, then, and similar words.
 
 ```{r}
@@ -100,7 +102,7 @@ tidy_paragraphs <-tidy_paragraphs %>%
 #filters out non-grepl (string) digits from 0-9 in any form in the word column
 ```
 
-Cleaning is a lengthy and involved process that differs between every project and depends on the data you are using. Take your time cleaning the data.
+Cleaning is a lengthy and involved process that differs between every project and depends on the data you are using. Take your time cleaning the data to get the best results.
 
 # Analyzing the Data
 
@@ -126,7 +128,7 @@ t_para <- tidy_paragraphs %>%
   count(word, sort = TRUE) 
 ```
 
-Note that the new object (t_para) counts words in the entire tokenized corpus we fed to it (tidy_paragraphs) and did NOT treat each article as a separate entity. You can make a very simple wordcloud using the wordcloud2() function.
+Note that the new object (t_para) counts words in the entire tokenized corpus we fed to it (tidy_paragraphs) and did NOT treat each paragraph/article as a separate entity. You can make a very simple wordcloud using the wordcloud2() function.
 
 ```{r}
 wordcloud2(t_para)
@@ -186,7 +188,7 @@ When human readers approach a text, we use our understanding of the emotional in
 
 ![](Images/5.png)
 
-There alrerady exist quite a few existing dictionaries and methods for sentiment analysis that make our work easier. The tidytext package provides access to several ready made sentiment lexicons.
+There already exist quite a few existing dictionaries and methods for sentiment analysis that make our work easier. The tidytext package provides access to several ready made sentiment lexicons.
 
 All three of these lexicons are based on unigrams, i.e., single words. These lexicons contain many English words and the words are assigned scores for positive/negative sentiment, and also possibly emotions like joy, anger, or sadness.
 
@@ -244,6 +246,10 @@ This is not altogether surprising as the first 3 documents are judicial opinions
 
 # Other packages and options
 
-Text analysis has gained significant steam and multiple packages have been developed to analyze sentiment and other features of text. Some of the interesting and popular packages out there include: [Quanteda](http://quanteda.io/) and many others. Some, including quanteda are discussed in the book we based this tutorial largely on [**Text Mining with R**](https://www.tidytextmining.com/index.html "A Tidy Approach"), some are genenal purpose others satisfy a specific requirement. We encourage you to read more if you are interested in exploring this further.
+Text analysis has gained significant steam and multiple packages have been developed to analyze sentiment and other features of text. Some of the interesting and popular packages out there include: [Quanteda](http://quanteda.io/), [Tm](https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf) and many others. Some, including quanteda are discussed in the book we based this tutorial largely on [**Text Mining with R**](https://www.tidytextmining.com/index.html "A Tidy Approach"), some are general purpose others satisfy a specific requirement. We encourage you to read more if you are interested in exploring this further.
 
 Furthermore, when you develop your own research you may want to develop your own dictionary for text depending on what you are looking for. For example, the AMAR project (see ilcss) developed dictionaries to detect ethnic minority groups and a variety of activity they engage in in news paper text. We will learn more about this March 7th.
+
+# Assignment
+
+Pull this tutorial and all associated documents onto your computer from github (https://github.com/jkbirnir/working_with_text). Use the news data provided on github (or another corpus of your choosing) to tokenize this corpus and clean of stopwords to produce a graphical representation (word frequency, wordcloud etc.). Upload to ELMS.

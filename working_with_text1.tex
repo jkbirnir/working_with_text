@@ -193,7 +193,7 @@
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, frame hidden, enhanced, borderline west={3pt}{0pt}{shadecolor}, breakable, interior hidden, sharp corners]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, enhanced, frame hidden, interior hidden, breakable, sharp corners]}{\end{tcolorbox}}\fi
 
 First, install the packages you will likely need to conduct the text
 analysis.
@@ -285,8 +285,8 @@ article-paragraph.
 
 \includegraphics{Images/7.png}
 
-\hypertarget{cleaning}{%
-\section{Cleaning}\label{cleaning}}
+\hypertarget{tokenization}{%
+\section{Tokenization}\label{tokenization}}
 
 To work with the unmodified corpus data we need to render it into a
 format that we can use for text analysis. Specifically, the data we need
@@ -325,6 +325,9 @@ repeats for each article-paragraph-word that we downloaded that contains
 text.
 
 \includegraphics{Images/1.png}
+
+\hypertarget{cleaning}{%
+\subsubsection{Cleaning}\label{cleaning}}
 
 Now we want to begin cleaning the corpus by removing unnecessary words.
 These are words that convey no meaningful information but appear
@@ -381,7 +384,7 @@ You can also clean out any numbers with the following code.
 
 Cleaning is a lengthy and involved process that differs between every
 project and depends on the data you are using. Take your time cleaning
-the data.
+the data to get the best results.
 
 \hypertarget{analyzing-the-data}{%
 \section{Analyzing the Data}\label{analyzing-the-data}}
@@ -422,9 +425,9 @@ less frequently will be smaller.
 \end{Shaded}
 
 Note that the new object (t\_para) counts words in the entire tokenized
-corpus we fed to it (tidy\_paragraphs) and did NOT treat each article as
-a separate entity. You can make a very simple wordcloud using the
-wordcloud2() function.
+corpus we fed to it (tidy\_paragraphs) and did NOT treat each
+paragraph/article as a separate entity. You can make a very simple
+wordcloud using the wordcloud2() function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -513,7 +516,7 @@ approach the emotional content of text programmatically, as shown below:
 
 \includegraphics{Images/5.png}
 
-There alrerady exist quite a few existing dictionaries and methods for
+There already exist quite a few existing dictionaries and methods for
 sentiment analysis that make our work easier. The tidytext package
 provides access to several ready made sentiment lexicons.
 
@@ -613,10 +616,12 @@ situation in the Yugoslav republic.
 Text analysis has gained significant steam and multiple packages have
 been developed to analyze sentiment and other features of text. Some of
 the interesting and popular packages out there include:
-\href{http://quanteda.io/}{Quanteda} and many others. Some, including
-quanteda are discussed in the book we based this tutorial largely on
+\href{http://quanteda.io/}{Quanteda},
+\href{https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf}{Tm}
+and many others. Some, including quanteda are discussed in the book we
+based this tutorial largely on
 \href{https://www.tidytextmining.com/index.html}{\textbf{Text Mining
-with R}}, some are genenal purpose others satisfy a specific
+with R}}, some are general purpose others satisfy a specific
 requirement. We encourage you to read more if you are interested in
 exploring this further.
 
@@ -625,6 +630,14 @@ your own dictionary for text depending on what you are looking for. For
 example, the AMAR project (see ilcss) developed dictionaries to detect
 ethnic minority groups and a variety of activity they engage in in news
 paper text. We will learn more about this March 7th.
+
+\hypertarget{assignment}{%
+\section{Assignment}\label{assignment}}
+
+Use the news data provided on github (or another corpus of your
+choosing) to tokenize this corpus and clean of stopwords to produce a
+graphical representation (word frequency, wordcloud etc.). Upload to
+ELMS.
 
 
 
