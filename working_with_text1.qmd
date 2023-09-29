@@ -252,4 +252,4 @@ Furthermore, when you develop your own research you may want to develop your own
 
 # Assignment
 
-Pull this tutorial and all associated documents onto your computer from github (https://github.com/jkbirnir/working_with_text). Use the news data provided on github (or another corpus of your choosing) to tokenize this corpus and clean of stopwords to produce a graphical representation (word frequency, wordcloud etc.). Upload to ELMS.
+Pull this tutorial and all associated documents onto your computer from github (https://github.com/jkbirnir/working_with_text). Use the news data (text_a3) provided on github (or another corpus of your choosing) to tokenize this corpus and clean of stopwords to produce a graphical representation (word frequency, wordcloud etc.). Upload to ELMS.
